@@ -1,0 +1,14 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "../../Advice.svelte",
+    "../../App.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n  export let slip = {};\n  import { fade } from \"svelte/transition\";\n</script>\n\n<style>\n  h1 {\n    color: #ff3e00;\n    text-transform: uppercase;\n    font-size: 4em;\n    font-weight: 100;\n  }\n</style>\n\n<h1>\n  <span transition:fade>{slip.advice}</span>\n</h1>\n<p transition:fade>Advice #{slip.id}</p>\n",
+    "<script>\n  import { onMount } from \"svelte\";\n  import { fade } from \"svelte/transition\";\n  import Advice from \"./Advice.svelte\";\n\n  let adviceSlip = {};\n\n  const typewriter = (node, { speed = 50 }) => {\n    const valid =\n      node.childNodes.length === 1 &&\n      node.childNodes[0].nodeType === Node.TEXT_NODE;\n\n    if (!valid) {\n      throw new Error(\n        `This transition only works on elements with a single text node child`\n      );\n    }\n\n    const text = node.textContent;\n    const duration = text.length * speed;\n\n    return {\n      duration,\n      tick: (t) => {\n        const i = ~~(text.length * t);\n        node.textContent = text.slice(0, i);\n      },\n    };\n  };\n\n  const getAdvice = async () => {\n    console.log(\"getAdvice\");\n    const res = await fetch(\"https://api.adviceslip.com/advice\");\n    const adviceSlipJson = await res.json();\n    adviceSlip = adviceSlipJson;\n  };\n\n  onMount(getAdvice);\n</script>\n\n<style>\n  main {\n    text-align: center;\n    padding: 1em;\n    max-width: 240px;\n    margin: 0 auto;\n  }\n\n  @media (min-width: 640px) {\n    main {\n      max-width: none;\n    }\n  }\n</style>\n\n<main>\n  {#if adviceSlip.slip}\n    <Advice slip={adviceSlip.slip} />\n  {:else}\n    <p in:typewriter>Loading advice...</p>\n  {/if}\n  <br />\n  <button transition:fade on:click={() => window.location.reload()}>\n    New advice ?\n  </button>\n</main>\n"
+  ],
+  "names": [],
+  "mappings": "AAME,EAAE,eAAC,CAAC,AACF,KAAK,CAAE,OAAO,CACd,cAAc,CAAE,SAAS,CACzB,SAAS,CAAE,GAAG,CACd,WAAW,CAAE,GAAG,AAClB,CAAC;AC8BD,IAAI,eAAC,CAAC,AACJ,UAAU,CAAE,MAAM,CAClB,OAAO,CAAE,GAAG,CACZ,SAAS,CAAE,KAAK,CAChB,MAAM,CAAE,CAAC,CAAC,IAAI,AAChB,CAAC,AAED,MAAM,AAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AACzB,IAAI,eAAC,CAAC,AACJ,SAAS,CAAE,IAAI,AACjB,CAAC,AACH,CAAC"
+}
