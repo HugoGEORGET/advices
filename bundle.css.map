@@ -2,8 +2,8 @@
   "version": 3,
   "file": "bundle.css",
   "sources": [
-    "../../Advice.svelte",
-    "../../App.svelte"
+    "../Advice.svelte",
+    "../App.svelte"
   ],
   "sourcesContent": [
     "<script>\n  export let slip = {};\n  import { fade } from \"svelte/transition\";\n</script>\n\n<style>\n  h1 {\n    color: #ff3e00;\n    text-transform: uppercase;\n    font-size: 4em;\n    font-weight: 100;\n  }\n</style>\n\n<h1>\n  <span transition:fade>{slip.advice}</span>\n</h1>\n<p transition:fade>Advice #{slip.id}</p>\n",
