@@ -56,6 +56,9 @@
   const handleClick = () => {
     adviceSlipPromise = getAdvice();
   };
+  const handleSearch = () => {
+    adviceSlipPromise = searchAdvice();
+  }
 
   onMount(getAdvice);
 </script>
@@ -98,5 +101,5 @@
     transition:fade
     bind:value={adviceQuery}
     placeholder="Search a piece of advice..." />
-  <button on:click={() => searchAdvice()}>Search</button>
+  <button on:click={handleSearch}>Search</button>
 </main>
