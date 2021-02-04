@@ -1,6 +1,5 @@
 <script>
   export let slip = {};
-  import { fade } from "svelte/transition";
 </script>
 
 <style>
@@ -13,6 +12,6 @@
 </style>
 
 <h1>
-  <span transition:fade>{slip.advice}</span>
+  <span>{slip.advice}</span>
 </h1>
-<p transition:fade>Advice #{slip.id}</p>
+<p>Advice #{slip.id}</p>
