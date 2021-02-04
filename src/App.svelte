@@ -3,7 +3,10 @@
   import { fade } from "svelte/transition";
   import Advice from "./Advice.svelte";
 
+  const API_URL = "https://api.adviceslip.com/advice";
+
   let adviceSlip = {};
+  let adviceSearch = "";
 
   const typewriter = (node, { speed = 50 }) => {
     const valid =
@@ -29,10 +32,16 @@
   };
 
   const getAdvice = async () => {
-    console.log("getAdvice");
-    const res = await fetch("https://api.adviceslip.com/advice");
+    const res = await fetch(API_URL);
     const adviceSlipJson = await res.json();
-    adviceSlip = adviceSlipJson;
+    adviceSlip = adviceSlipJson.slip;
+  };
+
+  const searchAdvice = async () => {
+    const res = await fetch(API_URL + "/search/" + adviceSearch);
+    const adviceSlipsJson = await res.json();
+    adviceSlip = adviceSlipsJson.slips[0];
+    console.log(adviceSlip);
   };
 
   onMount(getAdvice);
@@ -54,8 +63,8 @@
 </style>
 
 <main>
-  {#if adviceSlip.slip}
-    <Advice slip={adviceSlip.slip} />
+  {#if adviceSlip}
+    <Advice slip={adviceSlip} />
   {:else}
     <p in:typewriter>Loading advice...</p>
   {/if}
@@ -63,4 +72,10 @@
   <button transition:fade on:click={() => window.location.reload()}>
     New advice ?
   </button>
+  <br />
+  <input
+    transition:fade
+    bind:value={adviceSearch}
+    placeholder="Search a piece of advice..." />
+  <button on:click={() => searchAdvice()}>Search</button>
 </main>
